@@ -3,29 +3,9 @@ import { getMatchDetail, getMatches } from "./matchesApi";
 
 afterEach(() => {
   vi.unstubAllGlobals();
-  it("loads the complete match detail in one request", async () => {
-    const json = vi.fn().mockResolvedValue({
-      match: { matchId: "m1" },
-      pointByPoint: [{ matchId: "m1", quarter: "Q1", events: [] }],
-    });
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json,
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
-    const response = await getMatchDetail("m1");
-
-    expect(fetchMock).toHaveBeenCalledOnce();
-    expect(String(fetchMock.mock.calls[0][0])).toContain("/api/v1/matches/m1");
-    expect(response.match.matchId).toBe("m1");
-    expect(response.pointByPoint).toHaveLength(1);
-  });
-
 });
-describe("getMatches", () => {
+
+describe("matchesApi", () => {
   it("calls the paginated API with the expected sort", async () => {
     const json = vi.fn().mockResolvedValue({
       content: [],
@@ -50,6 +30,27 @@ describe("getMatches", () => {
     expect(String(fetchMock.mock.calls[0][0])).toContain(
       "/api/v1/matches?page=2&size=20&sort=projectedAt%2Cdesc",
     );
+  });
+
+  it("loads the complete match detail in one request", async () => {
+    const json = vi.fn().mockResolvedValue({
+      match: { matchId: "m1" },
+      pointByPoint: [{ matchId: "m1", quarter: "Q1", events: [] }],
+    });
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json,
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const response = await getMatchDetail("m1");
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(String(fetchMock.mock.calls[0][0])).toContain("/api/v1/matches/m1");
+    expect(response.match.matchId).toBe("m1");
+    expect(response.pointByPoint).toHaveLength(1);
   });
 
   it("throws when the API returns an error", async () => {
