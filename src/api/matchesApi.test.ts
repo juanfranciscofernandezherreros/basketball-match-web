@@ -67,3 +67,44 @@ describe("matchesApi", () => {
     );
   });
 });
+
+
+describe("getMatchDetail", () => {
+  it("loads the complete match with one request", async () => {
+    const json = vi.fn().mockResolvedValue({
+      match: {
+        matchId: "m1",
+        fixture: null,
+        result: null,
+        summary: null,
+        players: [],
+        teamStats: [],
+        pointByPointEvents: 2,
+        availableSections: ["pointByPoint"],
+        projectedAt: "2026-09-24T12:00:00Z"
+      },
+      pointByPoint: [
+        {
+          matchId: "m1",
+          quarter: "Q1",
+          events: [],
+          projectedAt: "2026-09-24T12:00:00Z"
+        }
+      ]
+    });
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json,
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const detail = await getMatchDetail("m1");
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(String(fetchMock.mock.calls[0][0])).toContain("/api/v1/matches/m1");
+    expect(detail.match.matchId).toBe("m1");
+    expect(detail.pointByPoint).toHaveLength(1);
+  });
+});
