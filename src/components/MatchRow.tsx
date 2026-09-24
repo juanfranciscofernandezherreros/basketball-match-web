@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Match } from "../types/match";
 
 interface MatchRowProps {
@@ -37,7 +38,7 @@ export function MatchRow({ match }: MatchRowProps) {
     match.summary?.resultAway != null;
 
   return (
-    <article className="match-row">
+    <Link className="match-row match-row--link" to={`/matches/${match.matchId}`}>
       <div className="match-row__time">
         <span>{displayDate(eventTime)}</span>
         <small>{isFinished ? "FINAL" : "PROGRAMADO"}</small>
@@ -62,6 +63,6 @@ export function MatchRow({ match }: MatchRowProps) {
         <span>{match.pointByPointEvents} jugadas</span>
         <span className="match-row__arrow" aria-hidden="true">›</span>
       </div>
-    </article>
+    </Link>
   );
 }
