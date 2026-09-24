@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import { getMatches } from "./api/matchesApi";
 import { CompetitionGroup } from "./components/CompetitionGroup";
 import { Header } from "./components/Header";
 import { MatchListSkeleton } from "./components/MatchListSkeleton";
 import { Pagination } from "./components/Pagination";
+import { MatchDetailPage } from "./pages/MatchDetailPage";
 import type { Match, PageResponse } from "./types/match";
 
 const PAGE_SIZE = 20;
@@ -42,7 +44,7 @@ export function groupMatches(matches: Match[]): MatchGroup[] {
   return Array.from(grouped.values());
 }
 
-export default function App() {
+function MatchesPage() {
   const [page, setPage] = useState(0);
   const [data, setData] = useState<PageResponse<Match> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -56,9 +58,7 @@ export default function App() {
     setError(null);
 
     getMatches(page, PAGE_SIZE, controller.signal)
-      .then((response) => {
-        setData(response);
-      })
+      .then(setData)
       .catch((requestError: unknown) => {
         if (controller.signal.aborted) {
           return;
@@ -82,81 +82,89 @@ export default function App() {
   const groups = useMemo(() => groupMatches(data?.content ?? []), [data]);
 
   return (
+    <main className="page">
+      <section className="hero">
+        <div>
+          <span className="eyebrow">MATCH CENTER</span>
+          <h1>Todos los partidos</h1>
+          <p>
+            Resultados, marcadores y estadísticas cargados desde Basketball Match API.
+          </p>
+        </div>
+        <div className="hero__metric">
+          <strong>{data?.totalElements ?? "—"}</strong>
+          <span>partidos</span>
+        </div>
+      </section>
+
+      <div className="date-strip" aria-label="Filtro visual de jornada">
+        <button type="button" className="date-strip__ghost" disabled>
+          ‹
+        </button>
+        <div className="date-strip__day">
+          <span>PARTIDOS</span>
+          <strong>Todos</strong>
+        </div>
+        <button type="button" className="date-strip__ghost" disabled>
+          ›
+        </button>
+      </div>
+
+      {loading && <MatchListSkeleton />}
+
+      {!loading && error && (
+        <section className="state-card state-card--error">
+          <strong>No se pudieron cargar los partidos</strong>
+          <p>{error}</p>
+          <button type="button" onClick={() => setRetryKey((current) => current + 1)}>
+            Reintentar
+          </button>
+        </section>
+      )}
+
+      {!loading && !error && groups.length === 0 && (
+        <section className="state-card">
+          <strong>No hay partidos disponibles</strong>
+          <p>Cuando el projector publique datos en MongoDB aparecerán aquí.</p>
+        </section>
+      )}
+
+      {!loading && !error && groups.length > 0 && (
+        <div className="competition-list">
+          {groups.map((group) => (
+            <CompetitionGroup
+              key={group.key}
+              label={group.label}
+              country={group.country}
+              matches={group.matches}
+            />
+          ))}
+        </div>
+      )}
+
+      {data && (
+        <Pagination
+          page={data.page}
+          totalPages={data.totalPages}
+          disabled={loading}
+          onPageChange={(nextPage) => {
+            setPage(nextPage);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
+      )}
+    </main>
+  );
+}
+
+export default function App() {
+  return (
     <div className="app-shell">
       <Header />
-
-      <main className="page">
-        <section className="hero">
-          <div>
-            <span className="eyebrow">MATCH CENTER</span>
-            <h1>Todos los partidos</h1>
-            <p>
-              Resultados, marcadores y estadísticas cargados desde Basketball Match API.
-            </p>
-          </div>
-          <div className="hero__metric">
-            <strong>{data?.totalElements ?? "—"}</strong>
-            <span>partidos</span>
-          </div>
-        </section>
-
-        <div className="date-strip" aria-label="Filtro visual de jornada">
-          <button type="button" className="date-strip__ghost" disabled>
-            ‹
-          </button>
-          <div className="date-strip__day">
-            <span>PARTIDOS</span>
-            <strong>Todos</strong>
-          </div>
-          <button type="button" className="date-strip__ghost" disabled>
-            ›
-          </button>
-        </div>
-
-        {loading && <MatchListSkeleton />}
-
-        {!loading && error && (
-          <section className="state-card state-card--error">
-            <strong>No se pudieron cargar los partidos</strong>
-            <p>{error}</p>
-            <button type="button" onClick={() => setRetryKey((current) => current + 1)}>
-              Reintentar
-            </button>
-          </section>
-        )}
-
-        {!loading && !error && groups.length === 0 && (
-          <section className="state-card">
-            <strong>No hay partidos disponibles</strong>
-            <p>Cuando el projector publique datos en MongoDB aparecerán aquí.</p>
-          </section>
-        )}
-
-        {!loading && !error && groups.length > 0 && (
-          <div className="competition-list">
-            {groups.map((group) => (
-              <CompetitionGroup
-                key={group.key}
-                label={group.label}
-                country={group.country}
-                matches={group.matches}
-              />
-            ))}
-          </div>
-        )}
-
-        {data && (
-          <Pagination
-            page={data.page}
-            totalPages={data.totalPages}
-            disabled={loading}
-            onPageChange={(nextPage) => {
-              setPage(nextPage);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          />
-        )}
-      </main>
+      <Routes>
+        <Route path="/" element={<MatchesPage />} />
+        <Route path="/matches/:matchId" element={<MatchDetailPage />} />
+      </Routes>
     </div>
   );
 }
