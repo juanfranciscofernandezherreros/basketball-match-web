@@ -525,3 +525,392 @@ button {
     display: none;
   }
 }
+
+
+.match-row--link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.back-link,
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  color: #344258;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.back-link {
+  margin-bottom: 14px;
+}
+
+.button-link {
+  margin-top: 16px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  color: white;
+  background: var(--red);
+}
+
+.detail-page {
+  display: grid;
+  gap: 16px;
+}
+
+.detail-loading {
+  padding: 46px 20px;
+  border-radius: 10px;
+  color: var(--muted);
+  text-align: center;
+  background: var(--surface);
+}
+
+.score-card,
+.detail-section {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 3px 18px rgba(31, 45, 64, 0.06);
+}
+
+.score-card__competition {
+  min-height: 48px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  background: #fafbfc;
+}
+
+.score-card__competition strong {
+  font-size: 13px;
+}
+
+.score-card__competition span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.score-board {
+  padding: 28px 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+
+.score-team {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.score-team__badge {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e0e5eb;
+  border-radius: 50%;
+  color: #263246;
+  background: #f8f9fb;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.score-team strong {
+  font-size: 15px;
+}
+
+.score-board__result {
+  display: grid;
+  place-items: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.score-board__result span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.score-board__result strong {
+  color: #101827;
+  font-size: clamp(32px, 6vw, 48px);
+}
+
+.period-grid {
+  padding: 14px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  background: #fafbfc;
+}
+
+.period-cell {
+  min-width: 68px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  text-align: center;
+  background: white;
+}
+
+.period-cell span,
+.period-cell strong {
+  display: block;
+}
+
+.period-cell span {
+  margin-bottom: 2px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.period-cell strong {
+  font-size: 12px;
+}
+
+.detail-section__header {
+  min-height: 52px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  background: #fafbfc;
+}
+
+.detail-section__header h2 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.detail-section__header span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.summary-grid > div {
+  min-width: 0;
+  padding: 16px 18px;
+  border-right: 1px solid var(--line);
+}
+
+.summary-grid > div:last-child {
+  border-right: 0;
+}
+
+.summary-grid span,
+.summary-grid strong {
+  display: block;
+}
+
+.summary-grid span {
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.summary-grid strong {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+
+.stats-block {
+  border-bottom: 1px solid var(--line);
+}
+
+.stats-block:last-child {
+  border-bottom: 0;
+}
+
+.stats-block h3,
+.players-card h3,
+.pbp-quarter h3 {
+  margin: 0;
+  padding: 12px 18px;
+  color: #4c586b;
+  background: #fbfcfd;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.stats-row {
+  min-height: 52px;
+  padding: 8px 18px;
+  display: grid;
+  grid-template-columns: 90px 1fr 90px;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #f0f2f5;
+  text-align: center;
+}
+
+.stats-row > span {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.stats-row div strong,
+.stats-row div small {
+  display: block;
+}
+
+.stats-row div strong {
+  font-size: 12px;
+}
+
+.stats-row div small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.players-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.players-card + .players-card {
+  border-left: 1px solid var(--line);
+}
+
+.players-table-wrap {
+  overflow-x: auto;
+}
+
+.players-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.players-table th,
+.players-table td {
+  padding: 10px 9px;
+  border-top: 1px solid #eef1f4;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.players-table th:first-child,
+.players-table td:first-child {
+  text-align: left;
+}
+
+.players-table th {
+  color: var(--muted);
+  background: #fafbfc;
+  font-size: 9px;
+}
+
+.pbp-layout {
+  display: grid;
+}
+
+.pbp-quarter + .pbp-quarter {
+  border-top: 1px solid var(--line);
+}
+
+.pbp-event {
+  min-height: 42px;
+  padding: 7px 18px;
+  display: grid;
+  grid-template-columns: 42px 90px 1fr;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.pbp-event__sequence {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pbp-event__score {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.pbp-event__meta {
+  color: #596579;
+  font-size: 11px;
+}
+
+.detail-empty {
+  margin: 0;
+  padding: 24px 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .score-board {
+    padding-inline: 12px;
+    grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .score-team__badge {
+    width: 46px;
+    height: 46px;
+    font-size: 17px;
+  }
+
+  .score-team strong {
+    font-size: 12px;
+  }
+
+  .score-board__result strong {
+    font-size: 28px;
+  }
+
+  .period-grid {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-grid > div {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .players-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .players-card + .players-card {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .stats-row {
+    grid-template-columns: 65px 1fr 65px;
+    padding-inline: 10px;
+  }
+
+  .pbp-event {
+    grid-template-columns: 32px 74px 1fr;
+    padding-inline: 10px;
+  }
+}
