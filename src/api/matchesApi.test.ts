@@ -1,0 +1,48 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { getMatches } from "./matchesApi";
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+describe("getMatches", () => {
+  it("calls the paginated API with the expected sort", async () => {
+    const json = vi.fn().mockResolvedValue({
+      content: [],
+      page: 2,
+      size: 20,
+      totalElements: 0,
+      totalPages: 0,
+      first: false,
+      last: true,
+    });
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json,
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    await getMatches(2, 20);
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(String(fetchMock.mock.calls[0][0])).toContain(
+      "/api/v1/matches?page=2&size=20&sort=projectedAt%2Cdesc",
+    );
+  });
+
+  it("throws when the API returns an error", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 503,
+      }),
+    );
+
+    await expect(getMatches(0, 20)).rejects.toThrow(
+      "No se pudieron cargar los partidos (503)",
+    );
+  });
+});
