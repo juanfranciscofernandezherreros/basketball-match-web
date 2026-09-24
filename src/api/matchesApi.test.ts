@@ -1,10 +1,30 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getMatches } from "./matchesApi";
+import { getMatchDetail, getMatches } from "./matchesApi";
 
 afterEach(() => {
   vi.unstubAllGlobals();
-});
+  it("loads the complete match detail in one request", async () => {
+    const json = vi.fn().mockResolvedValue({
+      match: { matchId: "m1" },
+      pointByPoint: [{ matchId: "m1", quarter: "Q1", events: [] }],
+    });
 
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json,
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const response = await getMatchDetail("m1");
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(String(fetchMock.mock.calls[0][0])).toContain("/api/v1/matches/m1");
+    expect(response.match.matchId).toBe("m1");
+    expect(response.pointByPoint).toHaveLength(1);
+  });
+
+});
 describe("getMatches", () => {
   it("calls the paginated API with the expected sort", async () => {
     const json = vi.fn().mockResolvedValue({
