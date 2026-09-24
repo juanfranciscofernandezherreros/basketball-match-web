@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 - 2026-09-24
+
+- Hace navegable cada partido a `/matches/{matchId}`.
+- Carga todo el detalle del partido mediante una única petición a `GET /api/v1/matches/{matchId}`.
+- Muestra marcador, parciales, summary, estadísticas de equipo, jugadores y point-by-point completo.
+- Añade React Router y layout responsive de detalle.
+
 ## 0.1.0 - 2026-09-24
 
 - Crea el frontend React + TypeScript con Vite.
