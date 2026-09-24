@@ -30,12 +30,17 @@ export function MatchRow({ match }: MatchRowProps) {
   const homeScore = match.result?.homeScore ?? match.summary?.resultHome ?? "-";
   const awayScore = match.result?.awayScore ?? match.summary?.resultAway ?? "-";
   const eventTime = match.fixture?.eventTime ?? match.result?.eventTime ?? match.summary?.date;
+  const isFinished =
+    match.result?.homeScore != null ||
+    match.result?.awayScore != null ||
+    match.summary?.resultHome != null ||
+    match.summary?.resultAway != null;
 
   return (
     <article className="match-row">
       <div className="match-row__time">
         <span>{displayDate(eventTime)}</span>
-        <small>FINAL</small>
+        <small>{isFinished ? "FINAL" : "PROGRAMADO"}</small>
       </div>
       <div className="match-row__teams">
         <div className="team-line">
