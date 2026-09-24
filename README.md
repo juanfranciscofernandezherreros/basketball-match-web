@@ -1,6 +1,6 @@
 # basketball-match-web
 
-Current version: **0.1.0**
+Current version: **0.2.0**
 
 Frontend React para visualizar los partidos publicados por `basketball-match-api`.
 
@@ -98,6 +98,18 @@ docker build --build-arg VITE_API_URL=https://api.example.com -t basketball-matc
 docker run --rm -p 8081:80 basketball-match-web
 ```
 
-## Próximos pasos
+## Detalle completo del partido
 
-La siguiente evolución natural es hacer cada fila navegable a una vista `/matches/{matchId}` con pestañas de resumen, estadísticas, jugadores y point-by-point.
+Cada fila de la lista abre:
+
+```text
+/matches/{matchId}
+```
+
+La vista realiza una única petición:
+
+```http
+GET /api/v1/matches/{matchId}
+```
+
+La respuesta contiene directamente toda la información necesaria: documento principal, marcador, parciales, summary, estadísticas de equipo, jugadores y point-by-point agrupado por cuarto. El frontend no necesita coordinar varias llamadas para componer el partido.
