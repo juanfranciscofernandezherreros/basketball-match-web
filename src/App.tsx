@@ -47,6 +47,7 @@ export default function App() {
   const [data, setData] = useState<PageResponse<Match> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -76,7 +77,7 @@ export default function App() {
       });
 
     return () => controller.abort();
-  }, [page]);
+  }, [page, retryKey]);
 
   const groups = useMemo(() => groupMatches(data?.content ?? []), [data]);
 
@@ -118,7 +119,7 @@ export default function App() {
           <section className="state-card state-card--error">
             <strong>No se pudieron cargar los partidos</strong>
             <p>{error}</p>
-            <button type="button" onClick={() => setPage((current) => current)}>
+            <button type="button" onClick={() => setRetryKey((current) => current + 1)}>
               Reintentar
             </button>
           </section>
